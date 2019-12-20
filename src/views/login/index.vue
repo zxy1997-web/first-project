@@ -59,10 +59,18 @@ export default {
   methods: {
     submitLogin (formName) {
       // 手动校验
-      this.$refs.formName.validate(function (isOK) {
+      this.$refs.formName.validate((isOK) => {
         if (isOK) {
           // 说明校验通过 应该调用接口
-          alert('成功')
+          this.$axios({
+            url: '/authorizations', // 请求地址 axios 没有指定类型 默认get类型
+            method: 'post',
+            data: this.loginForm
+          }).then(result => {
+            window.localStorage.setItem('user-token', result.data.data.token)
+          }).catch(() => {
+
+          })
         }
       })
     }
