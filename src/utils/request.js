@@ -14,9 +14,12 @@ axios.interceptors.request.use(function (config) {
 // 请求错误
 })
 
-axios.interceptors.response.use(function () {
-
-}, function () {
-
+// 响应拦截器
+axios.interceptors.response.use(function (response) {
+// 成功时执行该函数 状态码 200/201/204
+  return response.data ? response.data : {}
+}, function (error) {
+// 失败时执行该函数
+  return Promise.reject(error)
 })
 export default axios

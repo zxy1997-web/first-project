@@ -33,7 +33,7 @@ export default {
       url: '/user/profile'
 
     }).then(result => {
-      this.userInfo = result.data.data
+      this.userInfo = result.data
     })
   },
   methods: {
