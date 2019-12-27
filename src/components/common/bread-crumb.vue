@@ -4,8 +4,7 @@
   <el-breadcrumb-item>
       <slot name="title"></slot>
       </el-breadcrumb-item>
-  <el-breadcrumb-item></el-breadcrumb-item>
-  <el-breadcrumb-item></el-breadcrumb-item>
+
 </el-breadcrumb>
 </template>
 
