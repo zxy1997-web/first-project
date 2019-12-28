@@ -56,7 +56,8 @@ export default {
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
-        setTimeout(() => { this.loading = false }, 200)
+        this.loading = false
+        // setTimeout(() => { this.loading = false }, 200)
       })
     },
     getChange (newPage) {
