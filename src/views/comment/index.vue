@@ -1,6 +1,6 @@
 <template>
 <!-- 卡片组件 -->
-<el-card>
+<el-card v-loading="loading">
     <bread-crumb slot="header">
     <template slot="title">评论管理</template>
     </bread-crumb>
@@ -38,7 +38,8 @@
 export default {
   data () {
     return {
-      list: [], // 定义一个数据接收返回结果
+      list: [],
+      loading: false, // 定义一个数据接收返回结果
       page: {
         total: 0,
         pageSize: 10,
@@ -48,12 +49,14 @@ export default {
   },
   methods: {
     getComment () {
+      this.loading = true
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
+        setTimeout(() => { this.loading = false }, 200)
       })
     },
     getChange (newPage) {
