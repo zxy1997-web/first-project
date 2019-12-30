@@ -5,6 +5,12 @@
           素材管理
       </template>
       </bread-crumb>
+      <!-- 上传 -->
+      <el-row type='flex' justify="end">
+      <el-upload action="" :http-request="uploadImg" :show-file-list="false">
+        <el-button size="small" type="primary">上传图片</el-button>
+      </el-upload>
+    </el-row>
       <!-- 标签页 -->
       <el-tabs v-model="activeName" @tab-click="changeTab">
           <el-tab-pane label="全部图片" name="all">
@@ -13,7 +19,9 @@
               <el-card class="img-card" v-for="item in list " :key="item.id">
                 <img :src="item.url" alt="">
                 <el-row class="opeate" type="flex" justify="space-around" align="middle">
-                  <i class="el-icon-star-on"></i><i class="el-icon-delete-solid"></i>
+                  <!-- 判断是否改变图标颜色 -->
+                  <i @click="collectOrCanel(item)" :style="{color : item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
+                  <i @click="delMaterial(item.id)" class="el-icon-delete-solid"></i>
                 </el-row>
               </el-card>
             </div>
@@ -54,6 +62,35 @@ export default {
     }
   },
   methods: {
+    collectOrCanel (item) {
+      this.$axios({
+        method: 'put',
+        url: `/user/images/${item.id}`,
+        data: {
+          collect: !item.is_collected
+        }
+      }).then(result => {
+        this.getMaterial()
+      })
+    },
+    delMaterial (id) {
+      this.$confirm('你确定要删除此图片？')
+      this.$axios({
+        method: 'delete',
+        url: `/user/images/${id}`
+      })
+      this.getMaterial()
+    },
+    uploadImg (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('image', params.file)
+      this.$axios({
+        method: 'post',
+        url: '/user/images',
+        data
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage
       this.getMaterial()
@@ -104,6 +141,9 @@ export default {
       font-size: 20px;
       height: 36px;
       background-color: #f4f5f6;
+      i{
+        cursor: pointer;
+      }
     }
   }
 }
